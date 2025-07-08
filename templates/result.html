@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flight Price Result</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #dbeafe, #f0f9ff);
+      min-height: 100vh;
+    }
+    .result-card {
+      margin-top: 100px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+    .price {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #0d6efd;
+    }
+    .tip {
+      font-size: 1rem;
+      color: #333;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container d-flex justify-content-center">
+    <div class="result-card text-center col-md-6">
+      <i class="fas fa-plane-departure fa-3x mb-3 text-primary"></i>
+      <h2>Estimated Flight Price</h2>
+      <div class="price">₹ {{ price }}</div>
+      <div class="tip"><i class="fas fa-lightbulb text-warning"></i> Tip: {{ tips }}</div>
+      <a href="/" class="btn btn-outline-primary mt-4"><i class="fas fa-arrow-left"></i> Predict Again</a>
+    </div>
+  </div>
+</body>
+</html>
