@@ -6,7 +6,8 @@ import os
 
 app = Flask(__name__)
 
-model_path = os.path.join(os.path.dirname(__file__), 'flight_model.pkl')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(BASE_DIR, 'flight_model.pkl')
 
 model = pickle.load(open(model_path, 'rb'))
 with open('feature_order.json', 'r') as f:
