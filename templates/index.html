@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SkyPrice Estimator | Get Your Flight Price in Seconds!</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
     body {
-      background: linear-gradient(to right, #4facfe, #00f2fe);
+      background: linear-gradient(to right, #141e30, #243b55);
       min-height: 100vh;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -20,27 +22,28 @@
       width: 100%;
     }
     .ticket {
-      background: #fff;
+      background: #ffffff15;
       border-radius: 25px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
       padding: 60px 40px;
       position: relative;
+      backdrop-filter: blur(10px);
     }
-    .ticket:before,
-    .ticket:after {
+    .ticket::before,
+    .ticket::after {
       content: "";
       position: absolute;
       width: 30px;
       height: 30px;
-      background: #4facfe;
+      background: #00c6ff;
       border-radius: 50%;
       top: 50%;
       transform: translateY(-50%);
     }
-    .ticket:before {
+    .ticket::before {
       left: -15px;
     }
-    .ticket:after {
+    .ticket::after {
       right: -15px;
     }
     .slide {
@@ -52,41 +55,43 @@
     .form-control {
       border-radius: 12px;
       margin-top: 15px;
+      background: #f0f0f0;
     }
-    h2 {
+    h2, h1, p {
       text-align: center;
-      margin-bottom: 25px;
-      color: #333;
     }
     .summary {
       margin-top: 30px;
       padding: 25px;
-      background: #e9f5ff;
+      background: #ffffff10;
       border-radius: 15px;
-      color: #000;
       font-size: 1.1rem;
+      color: #fff;
     }
-    button {
+    .btn {
       margin-top: 25px;
+      font-weight: bold;
+    }
+    .btn-success {
+      background: linear-gradient(to right, #00f2fe, #4facfe);
+      border: none;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="row align-items-center min-vh-100">
-
-      <!-- Left: Title Section -->
       <div class="col-md-6 text-md-start text-center mb-5 mb-md-0">
-        <h1 class="display-4 fw-bold text-primary">SkyPrice Estimator</h1>
-        <p class="lead text-secondary">Get Your Flight Price in Seconds!</p>
+        <h1 class="display-4 fw-bold">SkyPrice Estimator</h1>
+        <p class="lead">Get Your Flight Price in Seconds!</p>
       </div>
 
-      <!-- Right: Ticket Form -->
       <div class="col-md-6">
         <form action="/predict" method="POST" id="flightForm">
           <div class="ticket">
             <div class="slide active">
               <h2>🛩️ Select Airline</h2>
+              <label for="airline">Airline</label>
               <select class="form-control" name="airline" id="airline" required>
                 <option value="">-- Select Airline --</option>
                 <option value="IndiGo">IndiGo</option>
@@ -102,24 +107,28 @@
                 <option value="Multiple carriers Premium economy">Multiple carriers Premium economy</option>
                 <option value="Trujet">Trujet</option>
               </select>
-              <button type="button" class="btn btn-primary w-100" onclick="nextSlide()">Next ➡️</button>
+              <button type="button" class="btn btn-primary w-100" onclick="validateSlide()">Next ➡️</button>
             </div>
 
             <div class="slide">
               <h2>📍 Source</h2>
+              <label for="source">Source</label>
               <select class="form-control" name="source" id="source" required>
+                <option value="">-- Select Source --</option>
                 <option>Delhi</option>
                 <option>Mumbai</option>
                 <option>Kolkata</option>
                 <option>Chennai</option>
                 <option>Banglore</option>
               </select>
-              <button type="button" class="btn btn-primary w-100" onclick="nextSlide()">Next ➡️</button>
+              <button type="button" class="btn btn-primary w-100" onclick="validateSlide()">Next ➡️</button>
             </div>
 
             <div class="slide">
               <h2>🎯 Destination</h2>
+              <label for="destination">Destination</label>
               <select class="form-control" name="destination" id="destination" required>
+                <option value="">-- Select Destination --</option>
                 <option>Cochin</option>
                 <option>Bangalore</option>
                 <option>Hyderabad</option>
@@ -127,11 +136,12 @@
                 <option>New Delhi</option>
                 <option>Kolkata</option>
               </select>
-              <button type="button" class="btn btn-primary w-100" onclick="nextSlide()">Next ➡️</button>
+              <button type="button" class="btn btn-primary w-100" onclick="validateSlide(true)">Next ➡️</button>
             </div>
 
             <div class="slide">
               <h2>🛑 Stops</h2>
+              <label for="stops">Number of Stops</label>
               <select class="form-control" name="stops" id="stops" required>
                 <option value="0">Non-stop</option>
                 <option value="1">1 stop</option>
@@ -139,17 +149,19 @@
                 <option value="3">3 stops</option>
                 <option value="4">4 stops</option>
               </select>
-              <button type="button" class="btn btn-primary w-100" onclick="nextSlide()">Next ➡️</button>
+              <button type="button" class="btn btn-primary w-100" onclick="validateSlide()">Next ➡️</button>
             </div>
 
             <div class="slide">
               <h2>📅 Journey Date</h2>
+              <label for="journey_date">Journey Date</label>
               <input type="date" class="form-control" name="journey_date" id="journey_date" required />
-              <button type="button" class="btn btn-primary w-100" onclick="nextSlide()">Next ➡️</button>
+              <button type="button" class="btn btn-primary w-100" onclick="validateSlide()">Next ➡️</button>
             </div>
 
             <div class="slide">
               <h2>🗓️ Booking Date</h2>
+              <label for="booking_date">Booking Date</label>
               <input type="date" class="form-control" name="booking_date" id="booking_date" required />
               <button type="button" class="btn btn-info w-100" onclick="showSummary()">🎟️ Show Ticket Summary</button>
             </div>
@@ -164,11 +176,11 @@
                 <p><strong>Booking Date:</strong> <span id="sum_booking"></span></p>
               </div>
               <button type="submit" class="btn btn-success w-100">🔍 Predict Price</button>
+              <button type="button" class="btn btn-secondary w-100" onclick="location.reload()">🔄 Start Over</button>
             </div>
           </div>
         </form>
       </div>
-
     </div>
   </div>
 
@@ -176,20 +188,34 @@
     let currentSlide = 0;
     const slides = document.querySelectorAll(".slide");
 
-    function nextSlide() {
-      if (currentSlide < slides.length - 1) {
-        slides[currentSlide].classList.remove("active");
-        currentSlide++;
-        slides[currentSlide].classList.add("active");
+    function validateSlide(checkTrip = false) {
+      const current = slides[currentSlide];
+      const input = current.querySelector("select, input");
+
+      if (!input || !input.value) {
+        alert("Please fill out this field before continuing.");
+        return;
       }
+
+      if (checkTrip) {
+        const src = document.getElementById("source").value;
+        const dst = document.getElementById("destination").value;
+        if (src === dst) {
+          alert("Source and Destination cannot be the same.");
+          return;
+        }
+      }
+
+      slides[currentSlide].classList.remove("active");
+      currentSlide++;
+      slides[currentSlide].classList.add("active");
     }
 
     function showSummary() {
-      updateSummary();
-      nextSlide();
-    }
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById("journey_date").setAttribute('min', today);
+      document.getElementById("booking_date").setAttribute('max', today);
 
-    function updateSummary() {
       document.getElementById("sum_airline").textContent = document.getElementById("airline").value;
       const src = document.getElementById("source").value;
       const dst = document.getElementById("destination").value;
@@ -197,6 +223,10 @@
       document.getElementById("sum_stops").textContent = document.getElementById("stops").selectedOptions[0].text;
       document.getElementById("sum_journey").textContent = document.getElementById("journey_date").value;
       document.getElementById("sum_booking").textContent = document.getElementById("booking_date").value;
+
+      slides[currentSlide].classList.remove("active");
+      currentSlide++;
+      slides[currentSlide].classList.add("active");
     }
   </script>
 </body>
