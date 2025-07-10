@@ -2,10 +2,13 @@ from flask import Flask, render_template, request, redirect,url_for
 import pandas as pd
 import pickle
 import json
+import os
 
 app = Flask(__name__)
 
-model = pickle.load(open('flight_model.pkl', 'rb'))
+model_path = os.path.join(os.path.dirname(__file__), 'flight_model.pkl')
+
+model = pickle.load(open(model_path, 'rb'))
 with open('feature_order.json', 'r') as f:
     feature_order = json.load(f)
 
